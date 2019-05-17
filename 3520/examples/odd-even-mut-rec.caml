@@ -1,0 +1,104 @@
+(* Redefine as mutually recursive function using ocaml
+   manual Section 6.7.1  *)
+
+let rec even n =
+if (n==0) then true
+          else odd (n-1)
+and (* here's the mutual recursion *)
+odd m =
+if (m==0) then false
+          else even (m-1);;
+
+(* use:
+# #use"odd-even-mut-rec.caml";;
+val even : int -> bool = <fun>
+val odd : int -> bool = <fun>
+
+# even 6;;
+- : bool = true
+# odd 6;;
+- : bool = false
+# even 7
+  ;;
+- : bool = false
+# odd 7;;
+- : bool = true
+
+# #trace even;;
+even is now traced.
+# #trace odd;;
+odd is now traced.
+
+# even 6;;
+even <-- 6
+odd <-- 5
+even <-- 4
+odd <-- 3
+even <-- 2
+odd <-- 1
+even <-- 0
+even --> true
+odd --> true
+even --> true
+odd --> true
+even --> true
+odd --> true
+even --> true
+- : bool = true
+
+# odd 6;;
+odd <-- 6
+even <-- 5
+odd <-- 4
+even <-- 3
+odd <-- 2
+even <-- 1
+odd <-- 0
+odd --> false
+even --> false
+odd --> false
+even --> false
+odd --> false
+even --> false
+odd --> false
+- : bool = false
+# even 7;;
+even <-- 7
+odd <-- 6
+even <-- 5
+odd <-- 4
+even <-- 3
+odd <-- 2
+even <-- 1
+odd <-- 0
+odd --> false
+even --> false
+odd --> false
+even --> false
+odd --> false
+even --> false
+odd --> false
+even --> false
+- : bool = false
+# odd 7;;
+odd <-- 7
+even <-- 6
+odd <-- 5
+even <-- 4
+odd <-- 3
+even <-- 2
+odd <-- 1
+even <-- 0
+even --> true
+odd --> true
+even --> true
+odd --> true
+even --> true
+odd --> true
+even --> true
+odd --> true
+- : bool = true
+# 
+
+
+*)

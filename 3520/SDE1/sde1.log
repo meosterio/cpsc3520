@@ -1,0 +1,173 @@
+?- uA(L, ["u"], []).
+L = 1.
+
+?- uA(L, ["u", "u"], []).
+L = 2.
+
+?- uA(L, ["u", "r"], []).
+false.
+
+?- rA(L, ["r", "u", "r"], []).
+false.
+
+?- rA(L, ["r", "r", "r"], []).
+L = 3.
+
+?- rA(L, ["r", "r", "r", "r"], []).
+L = 4.
+
+?- dA(L, ["d"], []).
+L = 1.
+
+?- dA(L, ["u"], []).
+false.
+
+?- dA(L, ["d", "d", "d"], []).
+L = 3.
+
+?- sq(["u", "r", "d", "l"], []).
+true .
+
+?- sq(["u", "r", "d", "l", "l"], []).
+true .
+
+?- sq(["u", "d", "l", "l"], []).
+false.
+
+?- sqA(["u", "r", "d", "l"], []).
+true .
+
+?- sqA(["u", "r", "d", "l", "l"], []).
+false.
+
+?- sqA(["u", "u", "r", "r", "d", "d", "l", "l"], []).
+true .
+
+?- rctA(["u", "r", "d", "l"], []).
+true .
+
+?- rctA(["u", "r", "d", "l", "l"], []).
+false.
+
+?- rctA(["u", "r", "r", "d", "l", "l"], []).
+true .
+
+?- grect(3, 4, What).
+What = ["u", "u", "u", "r", "r", "r", "r", "d", "d"|...] .
+
+?- grect(3, 4, What), writeq(What).
+["u","u","u","r","r","r","r","d","d","d","l","l","l","l"]
+What = ["u", "u", "u", "r", "r", "r", "r", "d", "d"|...] .
+
+?- grect(3, 1, What).
+What = ["u", "u", "u", "r", "d", "d", "d", "l"] .
+
+?- m30A(L, ["m30", "m30"], []).
+L = 2.
+
+?- m30A(L, ["m30", "m30", "m30"], []).
+L = 3.
+
+?- m30A(L, ["m30", "u", "m30"], []).
+false.
+
+?- p240A(L, ["p240"], []).
+L = 1.
+
+?- p240A(L, ["p240", "p240"], []).
+L = 2.
+
+?- p240A(L, ["p240", "m30"], []).
+false.
+
+?- eqtriA(["u", "m30", "p240"], []).
+true .
+
+?- eqtriA(["u", "m30", "p240", "p240"], []).
+false.
+
+?- eqtriA(["u", "p240", "p240"], []).
+false.
+
+?- one_shift([a,b,c,d], A).
+A = [b, c, d, a].
+
+?- one_shift([a,b,c,d,e,f], A).
+A = [b, c, d, e, f, a].
+
+?- one_shift([a,b,c,d,e,f], A), one_shift(A, B).
+A = [b, c, d, e, f, a],
+B = [c, d, e, f, a, b].
+
+?- length([a,b,c,d], L), all_shifts([a,b,c,d], R, L, 1).
+L = 4,
+R = [[b, c, d, a], [c, d, a, b], [d, a, b, c]].
+
+?- length([a,b,c,d,e,f], L), all_shifts([a,b,c,d,e,f], R, L, 1).
+L = 6,
+R = [[b, c, d, e, f, a], [c, d, e, f, a, b], [d, e, f, a, b, c], [e, f, a, b, c|...], [f, a, b, c|...]].
+
+?- length([a,b], L), all_shifts([a,b], R, L, 1).
+L = 2,
+R = [[b, a]].
+
+?- start_shifts([a,b,c,d], What).
+What = [[b, c, d, a], [c, d, a, b], [d, a, b, c]].
+
+?- start_shifts([a,b,c,d,e,f], What).
+What = [[b, c, d, e, f, a], [c, d, e, f, a, b], [d, e, f, a, b, c], [e, f, a, b, c|...], [f, a, b, c|...]].
+
+?- start_shifts([a,b], What).
+What = [[b, a]].
+
+?- all_cases([a,b,c,d], What).
+What = [[a, b, c, d], [b, c, d, a], [c, d, a, b], [d, a, b, c]].
+
+?- all_cases([a,b,c,d,e,f], What).
+What = [[a, b, c, d, e, f], [b, c, d, e, f, a], [c, d, e, f, a, b], [d, e, f, a, b|...], [e, f, a, b|...], [f, a, b|...]].
+
+?- all_cases([a,b], What).
+What = [[a, b], [b, a]].
+
+?- all_cases(["l", "u", "r", "d"], What), try_all_sqA(What).
+
+cyclic shift: ["u","r","d","l"] is a square
+What = [["l", "u", "r", "d"], ["u", "r", "d", "l"], ["r", "d", "l", "u"], ["d", "l", "u", "r"]] .
+
+?- all_cases(["d", "l","l", "u", "u", "r", "r", "d"], What), try_all_sqA(What).
+
+cyclic shift: ["u","u","r","r","d","d","l","l"] is a square
+What = [["d", "l", "l", "u", "u", "r", "r", "d"], ["l", "l", "u", "u", "r", "r", "d"|...], ["l", "u", "u", "r", "r", "d"|...], ["u", "u", "r", "r", "d"|...], ["u", "r", "r", "d"|...], ["r", "r", "d"|...], ["r", "d"|...], ["d"|...]] .
+
+?- all_cases(["d", "l","l", "u", "u", "r", "r"], What), try_all_sqA(What).
+false.
+
+?- all_cases(["d", "l","l", "u", "u", "r", "r"], What), try_all_rctA(What).
+false.
+
+?- all_cases(["d","d", "l", "u", "u", "r"], What), try_all_rctA(What).
+
+cyclic shift: ["u","u","r","d","d","l"] is a rectangle
+
+What = [["d", "d", "l", "u", "u", "r"], ["d", "l", "u", "u", "r", "d"], ["l", "u", "u", "r", "d", "d"], ["u", "u", "r", "d", "d"|...], ["u", "r", "d", "d"|...], ["r", "d", "d"|...]] .
+
+?- all_cases(["l", "u", "r", "d"], What), try_all_rctA(What).
+
+cyclic shift: ["u","r","d","l"] is a rectangle
+
+What = [["l", "u", "r", "d"], ["u", "r", "d", "l"], ["r", "d", "l", "u"], ["d", "l", "u", "r"]] .
+
+?- all_cases(["m30", "p240", "u"], What), try_all_eqtriA(What).
+
+cyclic shift: ["u","m30","p240"] is an equilateral triangle
+
+What = [["m30", "p240", "u"], ["p240", "u", "m30"], ["u", "m30", "p240"]] .
+
+?- all_cases(["m30", "p240", "u", "u"], What), try_all_eqtriA(What).
+false.
+
+?- all_cases(["m30", "p240","p240", "u", "u", "m30"], What), try_all_eqtriA(What).
+
+cyclic shift: ["u","u","m30","m30","p240","p240"] is an equilateral triangle
+
+What = [["m30", "p240", "p240", "u", "u", "m30"], ["p240", "p240", "u", "u", "m30", "m30"], ["p240", "u", "u", "m30", "m30", "p240"], ["u", "u", "m30", "m30", "p240"|...], ["u", "m30", "m30", "p240"|...], ["m30", "m30", "p240"|...]] .

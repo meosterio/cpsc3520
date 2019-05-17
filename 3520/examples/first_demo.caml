@@ -1,0 +1,39 @@
+(* first demo for class *)
+
+open List;; (* can't use this in SDE 2-- call as List.hd, etc.  *)
+
+let rec demo1 = function (avector) ->
+  avector;;
+
+let rec demo2 = function (avector) ->
+  avector@avector;;
+(* concatenate 2 vectors *)
+
+(* example:
+demo2 ["hi"];;
+- : string list = ["hi"; "hi"]
+# demo2(demo2 ["hi"]);;
+- : string list = ["hi"; "hi"; "hi"; "hi"]
+*)
+
+let rec demo3 = function (v1,v2) ->
+ (hd v1) + (hd v2) ;;
+(* add the heads of 2 lists
+ex:
+demo3([1;2],[3;4]);;
+- : int = 4
+*)
+
+let rec demo4 = function (v1,v2) ->
+if (v1=[]) && (v2=[]) then [] else
+ ((hd v1) + (hd v2))::demo4((tl v1),(tl v2));;
+(* adds head of 2 lists and pushes this value on head of tail
+add the list element by element *******
+push the first side as the head of next side, and return one List
+append to the front/ push
+
+# demo4([1;2],[3;4]);;
+- : int list = [4; 6]
+#
+
+*)

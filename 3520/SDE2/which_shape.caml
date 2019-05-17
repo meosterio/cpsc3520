@@ -1,0 +1,206 @@
+(*  SDE2
+    Alex Moore
+    CPSC 3520
+    Spring 2019
+*)
+
+let rec gen_string = function (n, what) ->
+  if n==0 then []
+  else
+  what :: gen_string (n-1, what) ;;
+
+let gen_square = function (n) ->
+  gen_string(n, "u") @ gen_string(n, "r")
+  @ gen_string(n, "d") @ gen_string(n, "l") ;;
+
+let gen_tri = function (n) ->
+  gen_string(n, "u") @ gen_string(n, "m30") @ gen_string(n, "p240") ;;
+
+let gen_rect = function (n,m) ->
+  gen_string(n, "u") @ gen_string(m, "r")
+  @ gen_string(n, "d") @ gen_string(m, "l") ;;
+
+let rec countups = function (what, n) ->
+  match what with
+  | [] -> n
+  | h::t -> if h = "u" then countups(t, n+1) else countups(t, n) ;;
+
+let rec remove what alist =
+  match alist with
+  | [] -> []
+  | h :: t -> if h = what then remove what t else h::(remove what t) ;;
+
+let rec consec_counts_help = function (alist, count, what, rest) ->
+  match alist with
+  | [] -> (rest, count)
+  | h::t -> if h = what then consec_counts_help(t, count+1, what, rest)
+    else consec_counts_help(t, count, what, rest) ;;
+
+let rec consec_counts = function (alist, count, what) ->
+  consec_counts_help(alist, count, what, (remove what alist)) ;;
+
+let rec count_var_4 = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then true else false
+  | h::t -> if [h] = what then count_var_4(t, list, what, n+1) else count_var_4(t, list, what, n) ;;
+
+let rec count_var_3 = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_var_4(list, list, (gen_string(1, "l")), 0) else false
+  | h::t -> if [h] = what then count_var_3(t, list, what, n+1) else count_var_3(t, list, what, n) ;;
+
+let rec count_var_2 = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_var_3(list, list, (gen_string(1, "d")), 0) else false
+  | h::t -> if [h] = what then count_var_2(t, list, what, n+1) else count_var_2(t, list, what, n) ;;
+
+let rec count_var = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_var_2(list, list, (gen_string(1, "r")), 0) else false
+  | h::t -> if [h] = what then count_var(t, list, what, n+1) else count_var(t, list, what, n) ;;
+
+let sq = function (alist) ->
+  if (count_var(alist, alist, (gen_string(1, "u")), 0)) then true else false ;;
+
+let rec count_va_4 = function (alist, list, what, u, r, d, n) ->
+  match alist with
+  | [] -> if (n > 0) then (list = (gen_string(u, "u")@gen_string(r, "r")
+    @ gen_string(d, "d") @ gen_string(n, "l"))) else false
+  | h::t -> if [h] = what then count_va_4(t, list, what, u, r, d, n+1) else count_va_4(t, list, what, u, r, d, n) ;;
+
+let rec count_va_3 = function (alist, list, what, u, r, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_va_4(list, list, (gen_string(1, "l")), u, r, n, 0) else false
+  | h::t -> if [h] = what then count_va_3(t, list, what, u, r, n+1) else count_va_3(t, list, what, u, r, n) ;;
+
+let rec count_va_2 = function (alist, list, what, u, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_va_3(list, list, (gen_string(1, "d")), u, n, 0) else false
+  | h::t -> if [h] = what then count_va_2(t, list, what, u, n+1) else count_va_2(t, list, what, u, n) ;;
+
+let rec count_va = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_va_2(list, list, (gen_string(1, "r")), n, 0) else false
+  | h::t -> if [h] = what then count_va(t, list, what, n+1) else count_va(t, list, what, n) ;;
+
+let sq_all = function (alist) ->
+  if (count_va(alist, alist, (gen_string(1, "u")), 0)) then true else false ;;
+
+let rec count_v_4 = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then (list = (gen_square(n))) else false
+  | h::t -> if [h] = what then count_v_4(t, list, what, n+1) else count_v_4(t, list, what, n) ;;
+
+let rec count_v_3 = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_v_4(list, list, (gen_string(1, "l")), 0) else false
+  | h::t -> if [h] = what then count_v_3(t, list, what, n+1) else count_v_3(t, list, what, n) ;;
+
+let rec count_v_2 = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_v_3(list, list, (gen_string(1, "d")), 0) else false
+  | h::t -> if [h] = what then count_v_2(t, list, what, n+1) else count_v_2(t, list, what, n) ;;
+
+let rec count_v = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_v_2(list, list, (gen_string(1, "r")), 0) else false
+  | h::t -> if [h] = what then count_v(t, list, what, n+1) else count_v(t, list, what, n) ;;
+
+let sqA = function (alist) ->
+  if (count_v(alist, alist, (gen_string(1, "u")), 0)) then true else false ;;
+
+let rec count_t_4 = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then (list = (gen_tri(n))) else false
+  | h::t -> if [h] = what then count_t_4(t, list, what, n+1) else count_t_4(t, list, what, n) ;;
+
+let rec count_t_2 = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_t_4(list, list, (gen_string(1, "p240")), 0) else false
+  | h::t -> if [h] = what then count_t_2(t, list, what, n+1) else count_t_2(t, list, what, n) ;;
+
+let rec count_t = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_t_2(list, list, (gen_string(1, "m30")), 0) else false
+  | h::t -> if [h] = what then count_t(t, list, what, n+1) else count_t(t, list, what, n) ;;
+
+let eqtriA = function (alist) ->
+  if (count_t(alist, alist, (gen_string(1, "u")), 0)) then true else false ;;
+
+let one_shift = function (alist) ->
+  List.tl alist @ gen_string(1, List.hd alist) ;;
+
+let rec all_cases_help = function (alist, n) ->
+  if n > 1 then gen_string(1, alist) @ all_cases_help(one_shift(alist), n-1) else gen_string(1, alist) ;;
+
+let all_cases = function (alist) ->
+  all_cases_help(alist, List.length alist) ;;
+
+let all_shifts = function (alist) ->
+  List.tl (all_cases_help(alist, List.length alist)) ;;
+
+let rec compareS_help = function (alist, list) ->
+  match alist with
+  | [] -> false
+  | h::t -> if h = list then true else compareS_help(t, list) ;;
+
+let compareS = function (u,r,d,l, list) ->
+  if (u!=r) then false
+  else if (u!=d) then false
+  else if (u!=l) then false
+  else if (r!=d) then false
+  else if (r!=l) then false
+  else if (d!=l) then false
+  else compareS_help(all_cases(gen_square(u)), list);;
+
+let rec count_vaa_4 = function (alist, list, what, u, r, d, n) ->
+  match alist with
+  | [] -> if (n > 0) then (compareS(u,r,d,n, list)) else false
+  | h::t -> if [h] = what then count_vaa_4(t, list, what, u, r, d, n+1) else count_vaa_4(t, list, what, u, r, d, n) ;;
+
+let rec count_vaa_3 = function (alist, list, what, u, r, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_vaa_4(list, list, (gen_string(1, "l")), u, r, n, 0) else false
+  | h::t -> if [h] = what then count_vaa_3(t, list, what, u, r, n+1) else count_vaa_3(t, list, what, u, r, n) ;;
+
+let rec count_vaa_2 = function (alist, list, what, u, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_vaa_3(list, list, (gen_string(1, "d")), u, n, 0) else false
+  | h::t -> if [h] = what then count_vaa_2(t, list, what, u, n+1) else count_vaa_2(t, list, what, u, n) ;;
+
+let rec count_vaa = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_vaa_2(list, list, (gen_string(1, "r")), n, 0) else false
+  | h::t -> if [h] = what then count_vaa(t, list, what, n+1) else count_vaa(t, list, what, n) ;;
+
+let try_all_sqA = function (alist) ->
+  if (count_vaa(alist, alist, (gen_string(1, "u")), 0)) then true else false ;;
+
+let rec compareT_help = function (alist, list) ->
+  match alist with
+  | [] -> false
+  | h::t -> if h = list then true else compareS_help(t, list) ;;
+
+let compareT = function (u,m,p, list) ->
+  if (u!=m) then false
+  else if (u!=p) then false
+  else if (m!=p) then false
+  else compareT_help(all_cases(gen_tri(u)), list);;
+
+let rec count_vat_4 = function (alist, list, what, u, m, n) ->
+  match alist with
+  | [] -> if (n > 0) then (compareT(u,m,n,list)) else false
+  | h::t -> if [h] = what then count_vat_4(t, list, what, u, m, n+1) else count_vat_4(t, list, what, u, m, n) ;;
+
+let rec count_vat_2 = function (alist, list, what, u, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_vat_4(list, list, (gen_string(1, "p240")), u, n, 0) else false
+  | h::t -> if [h] = what then count_vat_2(t, list, what, u, n+1) else count_vat_2(t, list, what, u, n) ;;
+
+let rec count_vat = function (alist, list, what, n) ->
+  match alist with
+  | [] -> if (n > 0) then count_vat_2(list, list, (gen_string(1, "m30")), n, 0) else false
+  | h::t -> if [h] = what then count_vat(t, list, what, n+1) else count_vat(t, list, what, n) ;;
+
+let try_all_eqtriA = function (alist) ->
+  if (count_vat(alist, alist, (gen_string(1, "u")), 0)) then true else false ;;

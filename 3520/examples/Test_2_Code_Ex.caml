@@ -1,0 +1,257 @@
+(* first demo for class *)
+
+open List;; (* can't use this in SDE 2-- call as List.hd, etc.  *)
+
+let rec demo1 = function (avector) ->
+  avector;;
+
+let rec demo2 = function (avector) ->
+  avector@avector;;
+(* concatenate 2 vectors *)
+
+(* example:
+demo2 ["hi"];;
+- : string list = ["hi"; "hi"]
+# demo2(demo2 ["hi"]);;
+- : string list = ["hi"; "hi"; "hi"; "hi"]
+*)
+
+let rec demo3 = function (v1,v2) ->
+ (hd v1) + (hd v2) ;;
+(* add the heads of 2 lists
+ex:
+demo3([1;2],[3;4]);;
+- : int = 4
+*)
+
+let rec demo4 = function (v1,v2) ->
+if (v1=[]) && (v2=[]) then [] else
+ ((hd v1) + (hd v2))::demo4((tl v1),(tl v2));;
+(* adds head of 2 lists and pushes this value on head of tail
+add the list element by element *******
+push the first side as the head of next side, and return one List
+append to the front/ push
+
+# demo4([1;2],[3;4]);;
+- : int list = [4; 6]
+#
+
+*)
+
+(*--------------------------------------------------------------*)
+
+let rec recursiveFn = function n->
+if n==0 then []
+        else
+        "3520" :: recursiveFn (n-1) ;;
+
+let rec do_something_aux = function (i,alist) ->
+  if (alist == []) then []
+                   else
+                      (i, (List.hd alist)) ::
+                      do_something_aux(i+1,(List.tl alist));;
+
+let do_something = function (i,j) ->
+    do_something_aux (i, (recursiveFn j));;
+
+
+(* samples
+
+# #use"do_something.caml";;
+val recursiveFn : int -> string list = <fun>
+val do_something_aux : int * 'a list -> (int * 'a) list = <fun>
+val do_something : int * int -> (int * string) list = <fun>
+# recursiveFn 5;;
+- : string list = ["3520"; "3520"; "3520"; "3520"; "3520"]
+# do_something_aux (3, [1,2,3]);;
+- : (int * (int * int * int)) list = [(3, (1, 2, 3))]
+# do_something(2,3);;
+- : (int * string) list = [(2, "3520"); (3, "3520"); (4, "3520")]
+
+*)
+
+(*--------------------------------------------------------------*)
+
+(* for in-class demo *)
+
+let rec sumit = fun (x) ->
+if (List.tl x) = [] then (List.hd x)
+  else (List.hd x) + (sumit (List.tl x));;
+
+let rec sumit2 = fun (x) ->
+if (List.tl x) = [] then (List.hd x)
+  else (List.hd x) +. (sumit2 (List.tl x));;
+
+let rec sumit3 = fun (x) ->
+if (x = []) then 0
+  else (List.hd x) + (sumit3 (List.tl x));;
+
+let rec last = fun (x) ->
+if (List.tl x) = [] then (List.hd x)
+  else (last (List.tl x));;
+
+let last2 = fun (x) ->
+List.nth x ((List.length x)-1);;
+
+(*--------------------------------------------------------------*)
+
+let rec member = function
+    (x, []) -> false
+  | (x, h::t) ->
+      if (h = x)
+        then true
+        else member (x, t) ;;
+
+(*--------------------------------------------------------------*)
+
+(* Redefine as mutually recursive function using ocaml
+   manual Section 6.7.1  *)
+
+let rec even n =
+if (n==0) then true
+          else odd (n-1)
+and (* here's the mutual recursion *)
+odd m =
+if (m==0) then false
+          else even (m-1);;
+
+(* use:
+# #use"odd-even-mut-rec.caml";;
+val even : int -> bool = <fun>
+val odd : int -> bool = <fun>
+
+# even 6;;
+- : bool = true
+# odd 6;;
+- : bool = false
+# even 7
+  ;;
+- : bool = false
+# odd 7;;
+- : bool = true
+
+# #trace even;;
+even is now traced.
+# #trace odd;;
+odd is now traced.
+
+# even 6;;
+even <-- 6
+odd <-- 5
+even <-- 4
+odd <-- 3
+even <-- 2
+odd <-- 1
+even <-- 0
+even --> true
+odd --> true
+even --> true
+odd --> true
+even --> true
+odd --> true
+even --> true
+- : bool = true
+
+# odd 6;;
+odd <-- 6
+even <-- 5
+odd <-- 4
+even <-- 3
+odd <-- 2
+even <-- 1
+odd <-- 0
+odd --> false
+even --> false
+odd --> false
+even --> false
+odd --> false
+even --> false
+odd --> false
+- : bool = false
+
+(*--------------------------------------------------------------*)
+
+let rec recursiveFn3 = function (n) ->
+if n==0 then []
+        else
+        sqrt (float_of_int n) :: recursiveFn3 (n-1) ;;
+
+(* use:
+
+# #use "recursiveFn3.caml";;
+val recursiveFn3 : int -> float list = <fun>
+# recursiveFn3 10;;
+- : float list =
+[3.16227766016837952; 3.; 2.82842712474619029; 2.64575131106459072;
+ 2.44948974278317788; 2.23606797749979; 2.; 1.73205080756887719;
+ 1.41421356237309515; 1.]
+# recursiveFn3 6;;
+- : float list =
+[2.44948974278317788; 2.23606797749979; 2.; 1.73205080756887719;
+ 1.41421356237309515; 1.]
+
+(* trace to show recursion (and possibly debug) *)
+
+# #trace recursiveFn3;;
+recursiveFn3 is now traced.
+# recursiveFn3 6;;
+recursiveFn3 <-- 6
+recursiveFn3 <-- 5
+recursiveFn3 <-- 4
+recursiveFn3 <-- 3
+recursiveFn3 <-- 2
+recursiveFn3 <-- 1
+recursiveFn3 <-- 0
+recursiveFn3 --> []
+recursiveFn3 --> [1.]
+recursiveFn3 --> [1.41421356237309515; 1.]
+recursiveFn3 --> [1.73205080756887719; 1.41421356237309515; 1.]
+recursiveFn3 --> [2.; 1.73205080756887719; 1.41421356237309515; 1.]
+recursiveFn3 -->
+  [2.23606797749979; 2.; 1.73205080756887719; 1.41421356237309515; 1.]
+recursiveFn3 -->
+  [2.44948974278317788; 2.23606797749979; 2.; 1.73205080756887719;
+   1.41421356237309515; 1.]
+- : float list =
+[2.44948974278317788; 2.23606797749979; 2.; 1.73205080756887719;
+ 1.41421356237309515; 1.]
+#
+*)
+
+(*--------------------------------------------------------------*)
+
+(* now trace it:
+
+# #trace recursiveFn;;
+recursiveFn is now traced.
+# recursiveFn 10;;
+recursiveFn <-- 10
+recursiveFn <-- 9
+recursiveFn <-- 8
+recursiveFn <-- 7
+recursiveFn <-- 6
+recursiveFn <-- 5
+recursiveFn <-- 4
+recursiveFn <-- 3
+recursiveFn <-- 2
+recursiveFn <-- 1
+recursiveFn <-- 0
+recursiveFn --> []
+recursiveFn --> ["UVa"]
+recursiveFn --> ["UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn -->
+  ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn -->
+  ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+- : string list =
+["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+
+*)
+
+(*--------------------------------------------------------------*)

@@ -1,0 +1,63 @@
+let rec recursiveFn = function (n) ->
+if n==0 then []
+        else
+        "UVa" :: recursiveFn (n-1) ;;
+
+(* use and some parens:
+
+# let rec recursiveFn = function (n) ->
+if n==0 then []
+        else
+        "UVa" :: recursiveFn (n-1) ;;      
+val recursiveFn : int -> string list = <fun>
+# recursiveFn 10;;
+- : string list =
+["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+
+# recursiveFn (10);;
+- : string list =
+["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+
+# (recursiveFn 10);;
+- : string list =
+["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+
+# (recursiveFn (10));;
+- : string list =
+["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+# 
+*)
+
+(* now trace it:
+
+# #trace recursiveFn;;
+recursiveFn is now traced.
+# recursiveFn 10;;
+recursiveFn <-- 10
+recursiveFn <-- 9
+recursiveFn <-- 8
+recursiveFn <-- 7
+recursiveFn <-- 6
+recursiveFn <-- 5
+recursiveFn <-- 4
+recursiveFn <-- 3
+recursiveFn <-- 2
+recursiveFn <-- 1
+recursiveFn <-- 0
+recursiveFn --> []
+recursiveFn --> ["UVa"]
+recursiveFn --> ["UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn --> ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn -->
+  ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+recursiveFn -->
+  ["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+- : string list =
+["UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"; "UVa"]
+
+*)

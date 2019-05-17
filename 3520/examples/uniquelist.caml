@@ -1,0 +1,5 @@
+let rec uniquelist = function alist -> 
+      if (alist=[]) then []
+         else if (mem (hd alist) (tl alist))
+              then uniquelist (tl alist)
+              else (hd alist)::(uniquelist (tl alist));;

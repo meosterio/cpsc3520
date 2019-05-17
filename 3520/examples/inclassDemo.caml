@@ -1,0 +1,20 @@
+(* for in-class demo *)
+
+let rec sumit = fun (x) ->
+if (List.tl x) = [] then (List.hd x)
+  else (List.hd x) + (sumit (List.tl x));;
+
+let rec sumit2 = fun (x) ->
+if (List.tl x) = [] then (List.hd x)
+  else (List.hd x) +. (sumit2 (List.tl x));;
+
+let rec sumit3 = fun (x) ->
+if (x = []) then 0
+  else (List.hd x) + (sumit3 (List.tl x));;
+
+let rec last = fun (x) ->
+if (List.tl x) = [] then (List.hd x)
+  else (last (List.tl x));;
+
+let last2 = fun (x) ->
+List.nth x ((List.length x)-1);;

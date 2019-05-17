@@ -1,0 +1,46 @@
+let rec recursiveFn3 = function (n) ->
+if n==0 then []
+        else
+        sqrt (float_of_int n) :: recursiveFn3 (n-1) ;;
+
+(* use:
+
+# #use "recursiveFn3.caml";;
+val recursiveFn3 : int -> float list = <fun>
+# recursiveFn3 10;;
+- : float list =
+[3.16227766016837952; 3.; 2.82842712474619029; 2.64575131106459072;
+ 2.44948974278317788; 2.23606797749979; 2.; 1.73205080756887719;
+ 1.41421356237309515; 1.]
+# recursiveFn3 6;;
+- : float list =
+[2.44948974278317788; 2.23606797749979; 2.; 1.73205080756887719;
+ 1.41421356237309515; 1.]
+
+(* trace to show recursion (and possibly debug) *)
+
+# #trace recursiveFn3;;
+recursiveFn3 is now traced.
+# recursiveFn3 6;;
+recursiveFn3 <-- 6
+recursiveFn3 <-- 5
+recursiveFn3 <-- 4
+recursiveFn3 <-- 3
+recursiveFn3 <-- 2
+recursiveFn3 <-- 1
+recursiveFn3 <-- 0
+recursiveFn3 --> []
+recursiveFn3 --> [1.]
+recursiveFn3 --> [1.41421356237309515; 1.]
+recursiveFn3 --> [1.73205080756887719; 1.41421356237309515; 1.]
+recursiveFn3 --> [2.; 1.73205080756887719; 1.41421356237309515; 1.]
+recursiveFn3 -->
+  [2.23606797749979; 2.; 1.73205080756887719; 1.41421356237309515; 1.]
+recursiveFn3 -->
+  [2.44948974278317788; 2.23606797749979; 2.; 1.73205080756887719;
+   1.41421356237309515; 1.]
+- : float list =
+[2.44948974278317788; 2.23606797749979; 2.; 1.73205080756887719;
+ 1.41421356237309515; 1.]
+# 
+*)

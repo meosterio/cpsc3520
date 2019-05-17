@@ -1,0 +1,6 @@
+let rec member = function
+    (x, []) -> false
+  | (x, h::t) ->
+      if (h = x)
+        then true
+        else member (x, t) ;; 

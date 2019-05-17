@@ -1,0 +1,29 @@
+let rec recursiveFn = function n->
+if n==0 then []
+        else
+        "3520" :: recursiveFn (n-1) ;;
+
+let rec do_something_aux = function (i,alist) ->
+  if (alist == []) then []
+                   else
+                      (i, (List.hd alist)) ::
+                      do_something_aux(i+1,(List.tl alist));;
+
+let do_something = function (i,j) ->
+    do_something_aux (i, (recursiveFn j));;
+
+
+(* samples
+
+# #use"do_something.caml";;
+val recursiveFn : int -> string list = <fun>
+val do_something_aux : int * 'a list -> (int * 'a) list = <fun>
+val do_something : int * int -> (int * string) list = <fun>
+# recursiveFn 5;;
+- : string list = ["3520"; "3520"; "3520"; "3520"; "3520"]
+# do_something_aux (3, [1,2,3]);;
+- : (int * (int * int * int)) list = [(3, (1, 2, 3))]
+# do_something(2,3);;
+- : (int * string) list = [(2, "3520"); (3, "3520"); (4, "3520")]
+
+*)
