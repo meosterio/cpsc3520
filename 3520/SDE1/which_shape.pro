@@ -1,5 +1,4 @@
 /*  SDE1
-    Alex Moore
     CPSC 3520
     Spring 2019
 */
